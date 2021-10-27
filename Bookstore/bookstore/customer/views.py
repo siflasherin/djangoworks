@@ -2,8 +2,6 @@ from django.shortcuts import render,redirect
 from customer import forms
 from django.contrib.auth import authenticate,login,logout
 from book.models import Book
-
-
 # Create your views here.
 
 def customer_home(request):
