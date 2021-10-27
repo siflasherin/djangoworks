@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+</head>
+<body>
+<form action="" method="POST">
+
+    {%csrf_token%}
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                {{form.as_p}}
+
+                <!--                <div>-->
+
+                <!--                    <label for=""> add course</label> <br>-->
+                <!--                    <input type="text" name="c_name">-->
+
+
+                <!--                </div>-->
+                <!--                <div>-->
+
+                <!--                    <label for=""> add batch</label> <br>-->
+                <!--                    <input type="text" name="b_name">-->
+                <!--                </div>-->
+                <button type="submit" class="btn btn-success">AddBatch</button>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+</form>
+</body>
+</html>
