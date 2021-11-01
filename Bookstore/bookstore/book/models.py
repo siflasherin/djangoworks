@@ -24,6 +24,22 @@ class Cart(models.Model):
     )
     status=models.CharField(max_length=100,choices=options,default="incart")
 
+class Orders(models.Model):
+    item=models.ForeignKey(Book,on_delete=models.CASCADE)
+    user=models.CharField(max_length=100)
+    address=models.CharField(max_length=100)
+    date_order=models.DateField(auto_now_add=True)
+    options = (
+        ("orderplaced", "oredrplaced"),
+        ("dispatch", "dispatch"),
+        ("intransit", "intransit"),
+        ("delivered", "delivered"),
+        ("order_cancelled", "order_cancelled")
+    )
+    status = models.CharField(max_length=120, choices=options, default="orderplaced")
+    expected_delivery_date = models.DateField(null=True, blank=True)
+
+
 # orm (object relational mapping)
 #
 #create model

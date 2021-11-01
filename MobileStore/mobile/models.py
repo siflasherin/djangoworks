@@ -25,6 +25,8 @@ class Cart(models.Model):
         ("order placed","order placed")
     )
     status=models.CharField(max_length=100,choices=options,default="incart")
+
+
 # book=Book()
 # print(Book)
 

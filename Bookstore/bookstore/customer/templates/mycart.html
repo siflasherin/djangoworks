@@ -17,8 +17,8 @@
                 <li class="list-group-item">{{cart.item.book_name}}</li>
                 <li class="list-group-item">{{cart.item.price}}</li>
                 <li class="list-group-item">{{cart.status}}</li>
-                <a href="#" class="btn btn-primary">BuyNow</a>
-                <a href="{%url 'removeitem' %}" class="btn btn-danger">Remove Item</a>
+                <a href="#" class="btn btn-primary">Buy Now</a>
+                <a href="{%url 'removeitem' cart.id %}" class="btn btn-danger">Remove Item</a>
             </ul>
         </div>
     </div>

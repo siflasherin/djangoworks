@@ -3,6 +3,7 @@ from customer import forms
 from django.contrib.auth import authenticate, login, logout
 from mobile.models import Mobile, Cart
 from django.views.generic import TemplateView
+from django.contrib import messages
 
 
 # Create your views here.
@@ -103,15 +104,30 @@ class AddToCart(TemplateView):
         id = kwargs["id"]
         mobile = Mobile.objects.get(id=id)
         cart = Cart.objects.create(item=mobile, user=request.user)
-        print("item is added to cart")
+        # print("item is added to cart")
+        messages.success(request,"item added to cart")
         cart.save()
         return redirect("customerhome")
 
+
 class MyCart(TemplateView):
-    model=Cart
-    template_name="mycart.html"
-    context={}
+    model = Cart
+    template_name = "mycart.html"
+    context = {}
+
     def get(self, request, *args, **kwargs):
-        mycart=self.model.objects.filter(user=request.user)
-        self.context["items"]=mycart
-        return render(request,self.template_name,self.context)
+        mycart = self.model.objects.filter(user=request.user, status="incart")
+        self.context["items"] = mycart
+        return render(request, self.template_name, self.context)
+
+
+class RemoveItem(TemplateView):
+    model = Cart
+
+    def get(self, request, *args, **kwargs):
+        id = kwargs["id"]
+        cart = Cart.objects.get(id=id)
+        cart.status = "cancelled"
+        cart.save()
+        messages.success(request,"item has been removed from cart")
+        return redirect("customerhome")

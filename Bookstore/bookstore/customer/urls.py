@@ -8,5 +8,5 @@ urlpatterns = [
     path("accounts/users/signout", views.signout, name="signout"),
     path("books/addtocart<int:id>",views.AddToCart.as_view(),name="addtocart"),
     path("books/mycart",views.MyCart.as_view(),name="mycart"),
-    path("books/removeitem",views.RemoveItem.as_view(),name="removeitem"),
+    path("books/removeitem<int:id>",views.RemoveItem.as_view(),name="removeitem"),
 ]
