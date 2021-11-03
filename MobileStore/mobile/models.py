@@ -26,7 +26,21 @@ class Cart(models.Model):
     )
     status=models.CharField(max_length=100,choices=options,default="incart")
 
-
+class Orders(models.Model):
+    item=models.ForeignKey(Cart,on_delete=models.CASCADE)
+    user=models.CharField(max_length=40)
+    address=models.CharField(max_length=100)
+    order_date=models.DateField(auto_now_add=True)
+#     orderplaced,dispatch,order_cancelled,delivered,intransit
+    options=(
+        ("orderplaced","orderplaced"),
+        ("dispatch","dispatch"),
+        ("intransit","intransit"),
+        ("delivered","delivered"),
+        ("order_cancelled","order_cancelled")
+    )
+    status=models.CharField(max_length=100,choices=options,default="orderplaced")
+    delivery_date=models.DateField(null=True,blank=True)
 # book=Book()
 # print(Book)
 

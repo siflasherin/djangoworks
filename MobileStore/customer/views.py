@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from customer import forms
 from django.contrib.auth import authenticate, login, logout
-from mobile.models import Mobile, Cart
-from django.views.generic import TemplateView
+from mobile.models import Mobile, Cart, Orders
+from django.views.generic import TemplateView, ListView
 from django.contrib import messages
 
 
@@ -105,7 +105,7 @@ class AddToCart(TemplateView):
         mobile = Mobile.objects.get(id=id)
         cart = Cart.objects.create(item=mobile, user=request.user)
         # print("item is added to cart")
-        messages.success(request,"item added to cart")
+        messages.success(request, "item added to cart")
         cart.save()
         return redirect("customerhome")
 
@@ -129,5 +129,63 @@ class RemoveItem(TemplateView):
         cart = Cart.objects.get(id=id)
         cart.status = "cancelled"
         cart.save()
-        messages.success(request,"item has been removed from cart")
+        messages.success(request, "item has been removed from cart")
         return redirect("customerhome")
+
+
+class OrderCreate(TemplateView):
+    model = Orders
+    form_class = forms.OrderForm
+    template_name = "ordercreation.html"
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        self.context["form"] = form
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        cid = kwargs["id"]
+        cart_item = Cart.objects.get(id=cid)
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data["address"]
+            user = request.user.username
+            item = cart_item.item
+            order = Orders.objects.create(
+                address=address,
+                item=cart_item,
+                user=user,
+            )
+            order.save()
+            cart_item.status = "orderplaced"
+            cart_item.save()
+            messages.success(request, "your order has been placed")
+            return redirect("customerhome")
+
+
+# class MyOrders(TemplateView):
+#     model = Orders
+#     template_name = "myorders.html"
+#     context = {}
+#
+#     def get(self, request, *args, **kwargs):
+#         myorder = self.model.objects.filter(user=request.user, status="orderplaced")
+#         self.context["items"] = myorder
+#         return render(request, self.template_name, self.context)
+
+class ViewMyOrder(ListView):
+    model = Orders
+    template_name = "myorders.html"
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = self.model.objects.filter(user=self.request.user)
+        return queryset
+
+# item = cart_item.item
+#             order = self.model.objects.create(
+#                 address=address,
+#                 item=item,
+#                 user=user,

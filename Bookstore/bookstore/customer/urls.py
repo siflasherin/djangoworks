@@ -9,4 +9,6 @@ urlpatterns = [
     path("books/addtocart<int:id>",views.AddToCart.as_view(),name="addtocart"),
     path("books/mycart",views.MyCart.as_view(),name="mycart"),
     path("books/removeitem<int:id>",views.RemoveItem.as_view(),name="removeitem"),
+    path("books/buynow<int:id>",views.OrderCreate.as_view(),name="createorder"),
+    path("books/myorders",views.ViewMyOrder.as_view(),name="myorders"),
 ]

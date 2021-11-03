@@ -20,7 +20,7 @@ class Cart(models.Model):
     options=(
         ("incart","incart"),
         ("cancelled","cancelled"),
-        ("order placed","order placed")
+        ("orderplaced","orderplaced")
     )
     status=models.CharField(max_length=100,choices=options,default="incart")
 

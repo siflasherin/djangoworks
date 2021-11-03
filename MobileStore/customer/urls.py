@@ -9,6 +9,6 @@ urlpatterns = [
     path("mobiles/addtocart<int:id>",views.AddToCart.as_view(),name="addtocart"),
     path("mobiles/mycart",views.MyCart.as_view(),name="mycart"),
     path("mobiles/removeitem<int:id>",views.RemoveItem.as_view(),name="removeitem"),
-
-
+    path("mobiles/buynow<int:id>",views.OrderCreate.as_view(),name="ordercreation"),
+    path("mobile/myorders",views.ViewMyOrder.as_view(),name="myorders"),
 ]

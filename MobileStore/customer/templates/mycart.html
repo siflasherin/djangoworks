@@ -19,7 +19,7 @@
             <h5 class="card-title">{{cart.item.price}}</h5>
             <h5 class="card-title">{{cart.item.storage}}</h5>
             <h5 class="card-title">{{cart.status}}</h5>
-            <a href="#" class="btn btn-primary">BUY NOW</a>
+            <a href="{%url 'ordercreation' cart.id %}" class="btn btn-primary">BUY NOW</a>
             <a href="{%url 'removeitem' cart.id %}" class="btn btn-danger">Remove Item</a>
 
         </div>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from book.forms import BookAddForm
 from book.models import Book
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,ListView,CreateView,UpdateView,DetailView,DeleteView
 
 
 # Create your views here.
@@ -41,23 +41,29 @@ def home(request):
 #             # return render(request,"add_book.html",{"form":form})
 
 
-class AddBook(TemplateView):
-    def get(self, request, *args, **kwargs):
-        form = BookAddForm()
-        context = {}
-        context["form"] = form
-        return render(request, "add_book.html", context)
+# class AddBook(TemplateView):
+#     def get(self, request, *args, **kwargs):
+#         form = BookAddForm()
+#         context = {}
+#         context["form"] = form
+#         return render(request, "add_book.html", context)
+#
+#     def post(self, request):
+#         form = BookAddForm(request.POST, request.FILES)
+#
+#         if form.is_valid():
+#             form.save()
+#             return redirect("listbook")
+#         else:
+#             context = {}
+#             context["form"] = form
+#             return render(request, "add_book.html", context)
 
-    def post(self, request):
-        form = BookAddForm(request.POST, request.FILES)
+class AddBook(CreateView):
+    model=Book
+    template_name = "add_book.html"
+    fields="__all__"
 
-        if form.is_valid():
-            form.save()
-            return redirect("listbook")
-        else:
-            context = {}
-            context["form"] = form
-            return render(request, "add_book.html", context)
 
 
 # def list_book(request):
@@ -66,13 +72,17 @@ class AddBook(TemplateView):
 #     context["books"] = books
 #     return render(request, "list_book.html", context)
 
-class ListBook(TemplateView):
-    def get(self, request, *args, **kwargs):
-        books = Book.objects.all()
-        context = {}
-        context["books"] = books
-        return render(request, "list_book.html", context)
+# class ListBook(TemplateView):
+#     def get(self, request, *args, **kwargs):
+#         books = Book.objects.all()
+#         context = {}
+#         context["books"] = books
+#         return render(request, "list_book.html", context)
 
+class ListBook(ListView):
+    model=Book
+    template_name = "list_book.html"
+    context_object_name="books"
 
 # def remove_book(request, id):
 #     book = Book.objects.get(id=id)
@@ -86,6 +96,16 @@ class RemoveBook(TemplateView):
         book = Book.objects.get(id=id)
         book.delete()
         return redirect("listbook")
+
+
+# class RemoveBook(DeleteView):
+#     model=Book
+#     template_name = "list_book.html"
+#     def get_queryset(self,request,*args,**kwargs):
+#         queryset=super().get_queryset()
+#         id=kwargs["id"]
+#         queryset=self.model.objects.get(id=id)
+#         return queryset
 
 
 # def update_book(request, id):
