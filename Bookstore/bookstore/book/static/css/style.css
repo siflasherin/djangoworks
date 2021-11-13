@@ -1,2 +1,6 @@
-h1{color:red;}
-body{background:#a9bd66;}
+#first{
+background-color:#ffecb3;
+padding:2%;
+border: 4px outset black;
+display: block;
+}

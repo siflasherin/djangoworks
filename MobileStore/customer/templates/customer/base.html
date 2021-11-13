@@ -10,48 +10,56 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{%static 'css/styles.css'%}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+          integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 </head>
 <body>
 
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
+
         <div class="p-4 pt-5">
-<!--            <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a>-->
+            <!--            <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a>-->
             <ul class="list-unstyled components mb-5">
                 <li class="active">
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-                    <ul class="collapse list-unstyled" id="homeSubmenu">
-                        <li>
-                            <a href="#">Home 1</a>
-                        </li>
-                        <li>
-                            <a href="#">Home 2</a>
-                        </li>
-                        <li>
-                            <a href="#">Home 3</a>
-                        </li>
-                    </ul>
+                    <a href="{%url 'customerhome' %}">Home</a>
+                    <!--                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>-->
+                    <!--                    <ul class="collapse list-unstyled" id="homeSubmenu">-->
+                    <!--&lt;!&ndash;                        <li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                            <a href="#">Home 1</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        </li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                            <a href="#">Home 2</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        </li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                            <a href="#">Home 3</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        </li>&ndash;&gt;-->
+                    <!--                    </ul>-->
+                </li>
+
+                <!--                <li>-->
+                <!--                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"-->
+                <!--                       class="dropdown-toggle">Pages</a>-->
+                <!--                    <ul class="collapse list-unstyled" id="pageSubmenu">-->
+                <!--                        <li>-->
+                <!--                            <a href="#">Page 1</a>-->
+                <!--                        </li>-->
+                <!--                        <li>-->
+                <!--                            <a href="#">Page 2</a>-->
+                <!--                        </li>-->
+                <!--                        <li>-->
+                <!--                            <a href="#">Page 3</a>-->
+                <!--                        </li>-->
+                <!--                    </ul>-->
+                <!--                </li>-->
+                <li>
+                    <a href="{%url 'mycart' %}"> My Cart</a>
                 </li>
                 <li>
                     <a href="{%url 'myorders' %}">My Orders</a>
                 </li>
                 <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Pages</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="#">Page 1</a>
-                        </li>
-                        <li>
-                            <a href="#">Page 2</a>
-                        </li>
-                        <li>
-                            <a href="#">Page 3</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{%url 'mycart' %}">Cart</a>
+                    <a href="">About</a>
                 </li>
                 <li>
                     <a href="#">Contact</a>
@@ -71,7 +79,9 @@
 
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5">
-
+        <div style="background-color:#f8b739;" class="rounded-pill mb-5">
+            <h1 style="font-family: 'Merienda'; text-align:center;">ONLINE MOBILE STORE</h1>
+        </div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
 
@@ -88,14 +98,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{%url 'customerhome' %}">Home</a>
+                            <a class="nav-link" href="">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Portfolio</a>
-                        </li>
+                        <!--                        <li class="nav-item">-->
+                        <!--                            <a class="nav-link" href="#">Portfolio</a>-->
+                        <!--                        </li>-->
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact</a>
                         </li>
@@ -107,22 +117,35 @@
             </div>
         </nav>
 
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-4"></div>
+
+                <div class="col-4 mb-3">
+                    <form action="" method="get">
+                        {{filter.form.as_p}}
+                        <input type="submit" value="submit" class="btn btn-success">
+                    </form>
+                </div>
+                <div class="col-4"></div>
+            </div>
+            <div class="wrapper" style="background:rgba(0,0,0.6); max-width:550px; width:100%; padding:15px;
+             display:flex; justify-content:space-between; ">
+                <input type="text" class="input" placeholder="search by using Mobile Name" style="width:85%;
+                border:none; padding:15px 20px; border-radius:5px; font-weight:bold;">
+                <div class="searchbtn" style="background:#ffec00; width:10%; border-radius:5px;
+                 position:relative; cursor:pointer;">
+                    <i class="fas fa-search-plus" style="position:absolute; top:50%; left:50%;
+                    transform:translate(-50%,-50%)"></i>
+                </div>
+            </div>
+        </div>
+
         {%block body_block%}
 
 
         {%endblock%}
 
-        <!--        <h2 class="mb-4">Sidebar #01</h2>-->
-        <!--        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et-->
-        <!--            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex-->
-        <!--            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat-->
-        <!--            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit-->
-        <!--            anim id est laborum.</p>-->
-        <!--        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et-->
-        <!--            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex-->
-        <!--            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat-->
-        <!--            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit-->
-        <!--            anim id est laborum.</p>-->
     </div>
 </div>
 

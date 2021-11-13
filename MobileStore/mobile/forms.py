@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from mobile.models import Mobile
+from mobile.models import Mobile,Orders
 
 
 # class MobileAddForm(forms.Form):
@@ -40,3 +40,17 @@ class MobileAddForm(ModelForm):
             "copies": forms.NumberInput(attrs={"class": "form-control"}),
             "price": forms.NumberInput(attrs={"class": "form-control"}),
         }
+
+class OrderUpdateForm(ModelForm):
+    class Meta:
+        model=Orders
+        fields=["status","delivery_date"]
+        widgets={
+            "status":forms.Select(attrs={"class":"form-select"}),
+            "delivery_date":forms.DateInput(attrs={"type":"date","class":"form-select"})
+        }
+
+
+class LoginForm(forms.Form):
+    username=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-{%load static%}
+{%extends 'mobile/base.html'%}
+{%block body_block%}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{static 'css/style.css'%}">
+
 </head>
 <body>
 
@@ -23,8 +24,7 @@
                 <img src="{{mobile.image.url}}" class="card-img-top" alt="..." width="200px" height="200px">
                 <div class="card-body">
                     <h5 class="card-title">{{mobile.mobile_name}}</h5>
-<!--                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the-->
-<!--                        card's content.</p>-->
+
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">{{mobile.model}}</li>
@@ -34,10 +34,7 @@
                     <li class="list-group-item">{{mobile.price}}</li>
 
                 </ul>
-<!--                <div class="card-body">-->
-<!--                    <a href="#" class="card-link">Card link</a>-->
-<!--                    <a href="#" class="card-link">Another link</a>-->
-<!--                </div>-->
+
             </div>
         </div>
         <div class="col-4"></div>
@@ -46,3 +43,4 @@
 
 </body>
 </html>
+{%endblock%}

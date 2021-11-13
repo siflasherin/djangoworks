@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from customer import forms
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import TemplateView,ListView
-from book.models import Book
-from book.models import Cart, Orders
+from django.views.generic import TemplateView, ListView,DetailView,DeleteView,CreateView
+from book.models import Book, Cart, Orders
 from django.contrib import messages
-
+from book.decorators import signin_required,admin_permission_required
+from django.utils.decorators import method_decorator
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -14,12 +15,18 @@ from django.contrib import messages
 #     context={"books":books}
 #     return render(request,"customer/home.html",context)
 
-class CustomerHome(TemplateView):
-    def get(self, request, *args, **kwargs):
-        books = Book.objects.all()
-        context = {"books": books}
-        return render(request, "customer/home.html", context)
+# class CustomerHome(TemplateView):
+#     def get(self, request, *args, **kwargs):
+#         books = Book.objects.all()
+#         context = {"books": books}
+#         return render(request, "customer/home.html", context)
 
+# @method_decorator(admin_permission_required,name="dispatch")
+@method_decorator(signin_required,name="dispatch")
+class CustomerHome(ListView):
+    model=Book
+    template_name = "customer/home.html"
+    context_object_name="books"
 
 # def sign_up(request):
 #     form = forms.UserRegistrationForm
@@ -33,6 +40,7 @@ class CustomerHome(TemplateView):
 #             context["form"] = form
 #             return render(request, "user_registration.html", context)
 #     return render(request, "user_registration.html", context)
+
 
 class SignUp(TemplateView):
     def get(self, request, *args, **kwargs):
@@ -70,6 +78,7 @@ class SignUp(TemplateView):
 #
 #     return render(request, "login.html", context)
 
+
 class SignIn(TemplateView):
     def get(self, request, *args, **kwargs):
         form = forms.LoginForm()
@@ -82,6 +91,7 @@ class SignIn(TemplateView):
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
+            # if given credentials are valid ,return a user object
             user = authenticate(request, username=username, password=password)
             if user:
                 # if user exist aanenkil user nde session start cheyyanam.so call the login function
@@ -90,12 +100,14 @@ class SignIn(TemplateView):
             else:
                 return render(request, "login.html", {"form": form})
 
-
-def signout(request):
+@signin_required
+def signout(request,*args,**kwargs):
     logout(request)
+    #  Remove the authenticated user's ID from the request and flush their session data.
     return redirect("signin")
 
 
+@method_decorator(signin_required,name="dispatch")
 class AddToCart(TemplateView):
     model = Cart
 
@@ -109,6 +121,7 @@ class AddToCart(TemplateView):
         return redirect("customerhome")
 
 
+@method_decorator(signin_required,name="dispatch")
 class MyCart(TemplateView):
     model = Cart
     template_name = "mycart.html"
@@ -117,9 +130,14 @@ class MyCart(TemplateView):
     def get(self, request, *args, **kwargs):
         mycart = self.model.objects.filter(user=request.user, status="incart")
         self.context["items"] = mycart
+        # to get total sum of all products in cart
+        total=Cart.objects.filter(user=request.user,status="incart").aggregate(Sum("item__price"))
+        self.context["total"]=total['item__price__sum']
         return render(request, self.template_name, self.context)
 
 
+
+@method_decorator(signin_required,name="dispatch")
 class RemoveItem(TemplateView):
     model = Cart
 
@@ -132,6 +150,7 @@ class RemoveItem(TemplateView):
         return redirect("customerhome")
 
 
+@method_decorator(signin_required,name="dispatch")
 class OrderCreate(TemplateView):
     model = Orders
     form_class = forms.OrderForm
@@ -173,11 +192,15 @@ class OrderCreate(TemplateView):
 #         self.context["items"] = myorder
 #         return render(request, self.template_name, self.context)
 
+
+@method_decorator(signin_required,name="dispatch")
 class ViewMyOrder(ListView):
-    model=Orders
+    model = Orders
     template_name = "myorders.html"
     context_object_name = "orders"
+
     def get_queryset(self):
-        queryset=super().get_queryset()
-        queryset=self.model.objects.filter(user=self.request.user)
+        queryset = super().get_queryset()
+        queryset = self.model.objects.filter(user=self.request.user)
         return queryset
+

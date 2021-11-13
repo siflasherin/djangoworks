@@ -13,19 +13,29 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{%static 'css/sty.css'%}">
 </head>
-<body>
-
+<body style="background-image:url('{%static 'img/iphone.jpg'%}'); background-size:1800px 900px;
+ background-repeat:no-repeat; background-attachment:fixed; background-position:top;">
 <div class="container">
     <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6">
+        <div class="col-5"></div>
+
+        <div class="col-5 rounded-3 " style=" padding:25px; background-color:#ecffe5; font-family: 'Merienda';">
+            <h1 style="" class="pb-2">Mobile world</h1>
             <form action="" method="POST">
                 {%csrf_token%}
                 {{form.as_p}}
-                <input type="submit" value="Login" class="btn btn-primary">
+                <div style="text-align:center;" class="mb=3">
+                    <input id="btn" type="submit" value="Login" class="btn btn-success rounded-pill"> <br>
+                </div>
+                <div style="text-align:center;" class="pb-3 pt-3">
+                    <a href="">forgot password</a> <br>
+                    <div class="mt-3 ">
+                        <a href=""class="btn btn-success rounded-5" >Create an account</a>
+                    </div>
+                </div>
             </form>
         </div>
-        <div class="col-3"></div>
+        <div class="col-2"></div>
     </div>
 </div>
 

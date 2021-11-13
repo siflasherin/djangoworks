@@ -4,7 +4,11 @@ from django.contrib.auth import authenticate, login, logout
 from mobile.models import Mobile, Cart, Orders
 from django.views.generic import TemplateView, ListView
 from django.contrib import messages
-
+from mobile.decorators import signin_required,admin_permission_required
+from django.utils.decorators import method_decorator
+from django.db.models import Sum
+from customer.filters import MobileFilter
+import django_filters
 
 # Create your views here.
 
@@ -13,7 +17,7 @@ from django.contrib import messages
 #     context={}
 #     context["mobiles"]=mobiles
 #     return render(request, "customer/home.html",context)
-
+@method_decorator(signin_required,name="dispatch")
 class CustomerHome(TemplateView):
     def get(self, request, *args, **kwargs):
         mobiles = Mobile.objects.all()
@@ -92,11 +96,13 @@ class SignIn(TemplateView):
                 return render(request, "login.html", {"form": form})
 
 
+@signin_required
 def signout(request):
     logout(request)
     return redirect("signin")
 
 
+@method_decorator(signin_required,name="dispatch")
 class AddToCart(TemplateView):
     model = Cart
 
@@ -110,6 +116,7 @@ class AddToCart(TemplateView):
         return redirect("customerhome")
 
 
+@method_decorator(signin_required,name="dispatch")
 class MyCart(TemplateView):
     model = Cart
     template_name = "mycart.html"
@@ -118,9 +125,12 @@ class MyCart(TemplateView):
     def get(self, request, *args, **kwargs):
         mycart = self.model.objects.filter(user=request.user, status="incart")
         self.context["items"] = mycart
+        total=Cart.objects.filter(user=request.user,status="incart").aggregate(Sum("item__price"))
+        self.context["total"] = total["item__price__sum"]
         return render(request, self.template_name, self.context)
 
 
+@method_decorator(signin_required,name="dispatch")
 class RemoveItem(TemplateView):
     model = Cart
 
@@ -133,6 +143,7 @@ class RemoveItem(TemplateView):
         return redirect("customerhome")
 
 
+@method_decorator(signin_required,name="dispatch")
 class OrderCreate(TemplateView):
     model = Orders
     form_class = forms.OrderForm
@@ -151,7 +162,7 @@ class OrderCreate(TemplateView):
         if form.is_valid():
             address = form.cleaned_data["address"]
             user = request.user.username
-            item = cart_item.item
+
             order = Orders.objects.create(
                 address=address,
                 item=cart_item,
@@ -174,6 +185,8 @@ class OrderCreate(TemplateView):
 #         self.context["items"] = myorder
 #         return render(request, self.template_name, self.context)
 
+
+@method_decorator(signin_required,name="dispatch")
 class ViewMyOrder(ListView):
     model = Orders
     template_name = "myorders.html"
@@ -183,6 +196,17 @@ class ViewMyOrder(ListView):
         queryset = super().get_queryset()
         queryset = self.model.objects.filter(user=self.request.user)
         return queryset
+
+
+class MobileSearch(TemplateView):
+    model=Mobile
+    template_name = "base.html"
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        f=MobileFilter(self.request.GET,queryset=Mobile.objects.all())
+        context["filter"]=f
+        return context
+
 
 # item = cart_item.item
 #             order = self.model.objects.create(
